@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ManageBuddy - Task Roadmap</title>
+    <style>
+        /* GENERAL BODY STYLING */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #80deea);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: rgba(255,255,255,0.95);
+            padding: 40px 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        /* ROADMAP CARD STYLING */
+        .roadmap-card {
+            background: #ffffff;
+            border-left: 6px solid #3498db;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            line-height: 1.7;
+            color: #34495e;
+        }
+
+        .roadmap-card h1, .roadmap-card h2, .roadmap-card h3, .roadmap-card h4 {
+            color: #2980b9;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .roadmap-card p {
+            margin-bottom: 10px;
+        }
+
+        .roadmap-card ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .roadmap-card li {
+            margin-bottom: 5px;
+        }
+
+        /* NO ROADMAP MESSAGE */
+        .no-roadmap {
+            text-align: center;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 20px;
+            background: #3498db;
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* GOOGLE SHEET LINK */
+        .sheet-link {
+            display: inline-block;
+            margin: 10px 0 20px;
+            padding: 10px 15px;
+            background: #26a69a;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .sheet-link:hover {
+            background: #00796b;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    {% if task %}
+        <!-- TASK-SPECIFIC ROADMAP -->
+        <h2>🗺 Roadmap for: {{ task.title }}</h2>
+
+        {% if roadmap %}
+            <div class="roadmap-card">
+                {{ roadmap_html|safe }}
+            </div>
+        {% else %}
+            <p class="no-roadmap">No roadmap generated yet for this task.</p>
+        {% endif %}
+
+    {% else %}
+        <!-- SHEET/AI GENERATED ROADMAP -->
+        <h2>🧠 AI Generated Roadmap</h2>
+
+        {% if sheet_url %}
+            <a href="{{ sheet_url }}" class="sheet-link" target="_blank">📄 Open Google Sheet</a>
+        {% endif %}
+
+        {% if roadmap_html %}
+            <div class="roadmap-card">
+                {{ roadmap_html|safe }}
+            </div>
+        {% else %}
+            <p class="no-roadmap">No roadmap generated yet.</p>
+        {% endif %}
+
+    {% endif %}
+
+    <div style="text-align:center;">
+        <a href="{% url 'task_list' %}" class="back-btn">⬅ Back to Task List</a>
+    </div>
+
+</div>
+</body>
+</html>

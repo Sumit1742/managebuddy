@@ -1,0 +1,47 @@
+.signup-heading {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;  /* space between buttons */
+    margin-top: 10px;
+}
+
+.signup-btn {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    flex: 1;   /* make equal width */
+}
+
+.signup-btn:hover {
+    background: #0056b3;
+}
+
+.login-btn {
+    background: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    text-align: center;
+    flex: 1;   /* make equal width */
+    text-decoration: none; /* remove underline from <a> */
+}
+
+.login-btn:hover {
+    background: #218838;
+}

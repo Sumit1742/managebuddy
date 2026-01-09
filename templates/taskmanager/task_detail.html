@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ManageBuddy - Task Detail</title>
+    <link rel="stylesheet" href="{% static 'taskmanager/css/task_detail.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #f1f2f6);
+            padding: 30px;
+        }
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            padding: 30px;
+            transition: 0.3s;
+        }
+        .container:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+        .task-info {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f9fbfd;
+            border-radius: 12px;
+            border-left: 6px solid #3498db;
+        }
+        .task-info p {
+            margin: 10px 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .actions {
+            text-align: center;
+            margin: 25px 0;
+        }
+        .actions button {
+            padding: 12px 24px;
+            font-size: 15px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+         .done-btn {
+            background: #27ae60;
+            color: white;
+            box-shadow: 0 4px 10px rgba(39,174,96,0.3);
+        }
+        .done-btn:hover {
+            background: #219150;
+            transform: scale(1.05);
+        } 
+        .not-done-btn {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 0 4px 10px rgba(231,76,60,0.3);
+        }
+        .not-done-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+        .progress-history {
+            margin-top: 35px;
+        }
+        .progress-history h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+        }
+        th {
+            background: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        tr:hover {
+            background: #f1f1f1;
+        }
+        .status-done {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .status-notdone {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background: #ecf5ff;
+            transition: 0.3s;
+        }
+        .back-link:hover {
+            background: #d6eaff;
+            text-decoration: none;
+        }
+
+        /* 📱 Responsive */
+        @media (max-width: 600px) {
+            .actions button {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
+            th, td {
+                font-size: 13px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📌 Task Detail</h1>
+
+        <div class="task-info">
+            <p><span class="label">Title:</span> {{ task.title }}</p>
+            <p><span class="label">Description:</span> {{ task.description }}</p>
+            <p><span class="label">Deadline:</span> {{ task.deadline|date:"M d, Y H:i" }}</p>
+            <p><span class="label">Duration:</span> {{ task.duration }} mins</p>
+            <p><span class="label">Priority:</span> {{ task.get_priority_display }}</p>
+            <p><span class="label">Day Left:</span> {{ task.days_left }}</p>
+            
+            {% comment %} <a href="{% url 'tasks' %}">Progress</a> {% endcomment %}
+        </div>
+
+        <div class="actions">
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="status" value="done" class="done-btn">✅ Mark as Done</button>
+                <button type="submit" name="status" value="not_done" class="not-done-btn">❌ Mark as Not Done</button>
+            </form>
+        </div>
+
+        <div class="progress-history">
+            <h2>📊 Progress History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in history %}
+                        <tr>
+                            <td>{{ record.date|date:"M d, Y" }}</td>
+                            <td>
+                                {% if record.is_done %}
+                                    <span class="status-done">✅ Done</span>
+                                {% else %}
+                                    <span class="status-notdone">❌ Not Done</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No history yet</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{% url 'task_list' %}" class="back-link">⬅ Back to Task List</a>
+    </div>
+</body>
+</html>

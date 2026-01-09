@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ManageBuddy | Home</title>
+    <link rel="stylesheet" href="{% static 'taskmanager/css/home.css' %}">
+</head>
+<body>
+    <h1 style="text-align: center;">
+        Welcome to ManageBuddy 🧠
+    </h1>
+
+    {% if user.is_authenticated %}
+    <p class="username">👤 {{ user.username }}</p>
+    {% endif %}
+
+    <div style="text-align: center; margin-bottom: 60px;">
+        <a href="{% url 'task_list' %}">
+            <button>📋 View My Tasks</button>
+        </a>
+        <a href="{% url 'create_task' %}">
+            <button>➕ Add New Task</button>
+        </a>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="background-color: #ff4d4d;">🚪 Logout</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">
+                <button>🔐 Login</button>
+            </a>
+            <a href="{% url 'signup' %}">
+                <button>📝 Sign Up</button>
+            </a>
+        {% endif %}
+    </div>
+</body>
+</html>
